@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _controller = VideoPlayerController.file(_videoFile!)
         ..initialize().then((_) {
           setState(() {});
-          _controller!.play();
+          // Remove autoplay from here: _controller!.play();
         });
     }
   }
@@ -83,6 +83,19 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: _pickVideo,
               child: const Text('Pick Video'),
             ),
+            // Show a play button if the video is initialized but not playing
+            if (_controller != null &&
+                _controller!.value.isInitialized &&
+                !_controller!.value.isPlaying &&
+                _controller!.value.position == Duration.zero)
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _controller!.play();
+                  });
+                },
+                child: const Text('Play Video'),
+              ),
           ],
         ),
       ),
