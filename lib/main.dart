@@ -246,6 +246,19 @@ class VideoPlayerWidget extends StatelessWidget {
                       onDragging: (handlerIndex, lowerValue, upperValue) {
                         onSpeedChanged(lowerValue / 10);
                       },
+                      handler: FlutterSliderHandler(
+                        decoration: const BoxDecoration(),
+                        child: const Material(
+                          type: MaterialType.canvas,
+                          color: Colors.transparent,
+                          elevation: 3,
+                          child: Icon(
+                            Icons.speed, // Use the speed icon
+                            size: 25,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   if (controller != null && controller!.value.isInitialized)
@@ -368,6 +381,19 @@ class VideoPlayerWidget extends StatelessWidget {
                       onDragging: (handlerIndex, lowerValue, upperValue) {
                         onSpeedChanged(lowerValue / 10);
                       },
+                      handler: FlutterSliderHandler(
+                        decoration: const BoxDecoration(),
+                        child: const Material(
+                          type: MaterialType.canvas,
+                          color: Colors.transparent,
+                          elevation: 3,
+                          child: Icon(
+                            Icons.speed, // Use the speed icon
+                            size: 25,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
