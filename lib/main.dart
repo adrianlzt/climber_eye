@@ -327,7 +327,6 @@ class VideoPlayerWidget extends StatelessWidget {
                             controller!.play();
                           }
                         },
-                        // wrap this AspectRatio in a container with red background AI!
                         child: AspectRatio(
                           aspectRatio: controller!.value.aspectRatio,
                           child: VideoPlayer(controller!),
