@@ -108,13 +108,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return "$twoDigitMinutes:$twoDigitSeconds";
   }
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // Removed the if/else for landscape/portrait
-          // Always use a Row layout
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -148,6 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   },
                   formatDuration: _formatDuration,
+                  isLeft: true, // Add isLeft parameter
                 ),
               ),
               Expanded(
@@ -180,6 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   },
                   formatDuration: _formatDuration,
+                  isLeft: false, // Add isLeft parameter
                 ),
               ),
             ],
@@ -201,6 +201,7 @@ class VideoPlayerWidget extends StatelessWidget {
   final VoidCallback onSeekStart;
   final VoidCallback onSeekEnd;
   final String Function(Duration?) formatDuration;
+  final bool isLeft; // New parameter to determine slider position
 
   const VideoPlayerWidget({
     super.key,
@@ -214,13 +215,37 @@ class VideoPlayerWidget extends StatelessWidget {
     required this.onSeekStart,
     required this.onSeekEnd,
     required this.formatDuration,
+    required this.isLeft, // Include in constructor
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row( // Use Row to place video and slider side-by-side
+    // Conditionally arrange the slider and video based on isLeft
+    return Row(
       children: [
-        Expanded( // Video player takes up most of the space
+        if (isLeft) ...[
+          // Vertical slider and speed display for left video
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 200, // Adjust height as needed
+                child: FlutterSlider(
+                  axis: Axis.vertical,
+                  values: [playbackSpeed],
+                  min: 0.5,
+                  max: 2.0,
+                  onDragging: (handlerIndex, lowerValue, upperValue) {
+                    onSpeedChanged(lowerValue);
+                  },
+                ),
+              ),
+              Text("${playbackSpeed.toStringAsFixed(1)}x"),
+            ],
+          ),
+        ],
+        Expanded(
+          // Video player takes up most of the space
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -248,7 +273,7 @@ class VideoPlayerWidget extends StatelessWidget {
                     ),
                 ],
               ),
-              // Show a play button if video initialized but not playing
+              // Show a play button if the video is initialized but not playing
               if (controller != null &&
                   controller!.value.isInitialized &&
                   !controller!.value.isPlaying &&
@@ -282,25 +307,27 @@ class VideoPlayerWidget extends StatelessWidget {
             ],
           ),
         ),
-        // Vertical slider and speed display
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 200, // Adjust height as needed
-              child: FlutterSlider(
-                axis: Axis.vertical,
-                values: [playbackSpeed],
-                min: 0.5,
-                max: 2.0,
-                onDragging: (handlerIndex, lowerValue, upperValue) {
-                  onSpeedChanged(lowerValue);
-                },
+        if (!isLeft) ...[
+          // Vertical slider and speed display for right video
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 200, // Adjust height as needed
+                child: FlutterSlider(
+                  axis: Axis.vertical,
+                  values: [playbackSpeed],
+                  min: 0.5,
+                  max: 2.0,
+                  onDragging: (handlerIndex, lowerValue, upperValue) {
+                    onSpeedChanged(lowerValue);
+                  },
+                ),
               ),
-            ),
-            Text("${playbackSpeed.toStringAsFixed(1)}x"),
-          ],
-        ),
+              Text("${playbackSpeed.toStringAsFixed(1)}x"),
+            ],
+          ),
+        ]
       ],
     );
   }
