@@ -1,0 +1,6 @@
+
+This will create a release APK in `build/app/outputs/flutter-apk/app-release.apk`.
+
+## License
+
+This project is licensed under the GPLv3 - see the [LICENSE](LICENSE) file for details.

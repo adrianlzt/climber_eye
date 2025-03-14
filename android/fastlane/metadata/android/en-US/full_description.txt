@@ -1,0 +1,11 @@
+Climber Eye is a simple Flutter application that allows you to compare two videos simultaneously. It's designed to help analyze and compare movements, techniques, or any other visual details in two videos.
+
+Features:
+
+*   Side-by-side video playback.
+*   Independent playback controls for each video.
+*   Adjustable playback speed.
+*   Precise seeking.
+*   Zoom and pan.
+
+This app is open-source and released under the GPLv3 license.
