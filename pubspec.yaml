@@ -35,6 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   video_player: ^2.8.1
   file_picker: ^9.1.0
+  another_xlider: ^3.0.2
 
 dev_dependencies:
   flutter_test:

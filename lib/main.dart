@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+import 'package:another_xlider/another_xlider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -300,7 +301,7 @@ class VideoPlayerWidget extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               if (controller != null && controller!.value.isInitialized)
-                GestureDetector( // Wrap AspectRatio with GestureDetector
+                GestureDetector(
                   onTap: () {
                     if (controller!.value.isPlaying) {
                       controller!.pause();
@@ -351,21 +352,21 @@ class VideoPlayerWidget extends StatelessWidget {
                 Text(formatDuration(controller!.value.duration)),
               ],
             ),
-
           // Playback speed controls
           if (controller != null && controller!.value.isInitialized)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Column(
               children: [
                 SizedBox(
-                  width: 150,
-                  child: Slider(
-                    min: 0.5,
-                    max: 2.0,
-                    value: playbackSpeed,
-                    onChanged: onSpeedChanged,
-                  ),
-                ),
+                    height: 100,
+                    child: FlutterSlider(
+                      axis: Axis.vertical,
+                      values: [playbackSpeed],
+                      min: 0.5,
+                      max: 2.0,
+                      onDragging: (handlerIndex, lowerValue, upperValue) {
+                        onSpeedChanged(lowerValue);
+                      },
+                    )),
                 Text("${playbackSpeed.toStringAsFixed(1)}x"),
               ],
             ),
