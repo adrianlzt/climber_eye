@@ -302,8 +302,8 @@ class VideoPlayerWidget extends StatelessWidget {
                   Text("${playbackSpeed.toStringAsFixed(1)}x"),
                   if (controller != null && controller!.value.isInitialized)
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(formatDuration(position)),
+                      padding: const EdgeInsets.only(left: 45),
+                      child: Text("${formatDuration(position)} s"),
                     )
                 ],
               ),
@@ -425,8 +425,8 @@ class VideoPlayerWidget extends StatelessWidget {
                 children: [
                   if (controller != null && controller!.value.isInitialized)
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(formatDuration(position)),
+                      padding: const EdgeInsets.only(right: 45),
+                      child: Text("${formatDuration(position)} s"),
                     ),
                   Text("${playbackSpeed.toStringAsFixed(1)}x"),
                 ],
