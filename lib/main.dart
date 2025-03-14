@@ -3,6 +3,7 @@ import 'package:video_player/video_player.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:another_xlider/another_xlider.dart';
+import 'package:another_xlider/models/slider_step.dart';
 
 void main() {
   runApp(const MyApp());
