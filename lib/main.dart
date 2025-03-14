@@ -112,77 +112,155 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // Video Player 1
-              VideoPlayerWidget(
-                controller: _controller1,
-                pickVideo: () => _pickVideo(1),
-                playbackSpeed: _playbackSpeed1,
-                position: _position1,
-                isSeeking: _isSeeking1,
-                onSpeedChanged: (value) {
-                  setState(() {
-                    _playbackSpeed1 = value;
-                    _controller1!.setPlaybackSpeed(_playbackSpeed1);
-                  });
-                },
-                onSeekChanged: (value) {
-                  setState(() {
-                    _position1 = Duration(milliseconds: value.toInt());
-                    _controller1!.seekTo(_position1);
-                  });
-                },
-                onSeekStart: () {
-                  setState(() {
-                    _isSeeking1 = true;
-                  });
-                },
-                onSeekEnd: () {
-                  setState(() {
-                    _isSeeking1 = false;
-                  });
-                },
-                formatDuration: _formatDuration,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > constraints.maxHeight) {
+            // Landscape
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Expanded(
+                  child: VideoPlayerWidget(
+                    controller: _controller1,
+                    pickVideo: () => _pickVideo(1),
+                    playbackSpeed: _playbackSpeed1,
+                    position: _position1,
+                    isSeeking: _isSeeking1,
+                    onSpeedChanged: (value) {
+                      setState(() {
+                        _playbackSpeed1 = value;
+                        _controller1!.setPlaybackSpeed(_playbackSpeed1);
+                      });
+                    },
+                    onSeekChanged: (value) {
+                      setState(() {
+                        _position1 = Duration(milliseconds: value.toInt());
+                        _controller1!.seekTo(_position1);
+                      });
+                    },
+                    onSeekStart: () {
+                      setState(() {
+                        _isSeeking1 = true;
+                      });
+                    },
+                    onSeekEnd: () {
+                      setState(() {
+                        _isSeeking1 = false;
+                      });
+                    },
+                    formatDuration: _formatDuration,
+                  ),
+                ),
+                Expanded(
+                  child: VideoPlayerWidget(
+                    controller: _controller2,
+                    pickVideo: () => _pickVideo(2),
+                    playbackSpeed: _playbackSpeed2,
+                    position: _position2,
+                    isSeeking: _isSeeking2,
+                    onSpeedChanged: (value) {
+                      setState(() {
+                        _playbackSpeed2 = value;
+                        _controller2!.setPlaybackSpeed(_playbackSpeed2);
+                      });
+                    },
+                    onSeekChanged: (value) {
+                      setState(() {
+                        _position2 = Duration(milliseconds: value.toInt());
+                        _controller2!.seekTo(_position2);
+                      });
+                    },
+                    onSeekStart: () {
+                      setState(() {
+                        _isSeeking2 = true;
+                      });
+                    },
+                    onSeekEnd: () {
+                      setState(() {
+                        _isSeeking2 = false;
+                      });
+                    },
+                    formatDuration: _formatDuration,
+                  ),
+                ),
+              ],
+            );
+          } else {
+            // Portrait
+            return SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    // Video Player 1
+                    VideoPlayerWidget(
+                      controller: _controller1,
+                      pickVideo: () => _pickVideo(1),
+                      playbackSpeed: _playbackSpeed1,
+                      position: _position1,
+                      isSeeking: _isSeeking1,
+                      onSpeedChanged: (value) {
+                        setState(() {
+                          _playbackSpeed1 = value;
+                          _controller1!.setPlaybackSpeed(_playbackSpeed1);
+                        });
+                      },
+                      onSeekChanged: (value) {
+                        setState(() {
+                          _position1 = Duration(milliseconds: value.toInt());
+                          _controller1!.seekTo(_position1);
+                        });
+                      },
+                      onSeekStart: () {
+                        setState(() {
+                          _isSeeking1 = true;
+                        });
+                      },
+                      onSeekEnd: () {
+                        setState(() {
+                          _isSeeking1 = false;
+                        });
+                      },
+                      formatDuration: _formatDuration,
+                    ),
+                    const SizedBox(height: 40),
+                    // Video Player 2
+                    VideoPlayerWidget(
+                      controller: _controller2,
+                      pickVideo: () => _pickVideo(2),
+                      playbackSpeed: _playbackSpeed2,
+                      position: _position2,
+                      isSeeking: _isSeeking2,
+                      onSpeedChanged: (value) {
+                        setState(() {
+                          _playbackSpeed2 = value;
+                          _controller2!.setPlaybackSpeed(_playbackSpeed2);
+                        });
+                      },
+                      onSeekChanged: (value) {
+                        setState(() {
+                          _position2 = Duration(milliseconds: value.toInt());
+                          _controller2!.seekTo(_position2);
+                        });
+                      },
+                      onSeekStart: () {
+                        setState(() {
+                          _isSeeking2 = true;
+                        });
+                      },
+                      onSeekEnd: () {
+                        setState(() {
+                          _isSeeking2 = false;
+                        });
+                      },
+                      formatDuration: _formatDuration,
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 40),
-              // Video Player 2
-              VideoPlayerWidget(
-                controller: _controller2,
-                pickVideo: () => _pickVideo(2),
-                playbackSpeed: _playbackSpeed2,
-                position: _position2,
-                isSeeking: _isSeeking2,
-                onSpeedChanged: (value) {
-                  setState(() {
-                    _playbackSpeed2 = value;
-                    _controller2!.setPlaybackSpeed(_playbackSpeed2);
-                  });
-                },
-                onSeekChanged: (value) {
-                  setState(() {
-                    _position2 = Duration(milliseconds: value.toInt());
-                    _controller2!.seekTo(_position2);
-                  });
-                },
-                onSeekStart: () {
-                  setState(() {
-                    _isSeeking2 = true;
-                  });
-                },
-                onSeekEnd: () {
-                  setState(() {
-                    _isSeeking2 = false;
-                  });
-                },
-                formatDuration: _formatDuration,
-              ),
-            ],
-          ),
-        ),
+            );
+          }
+        },
       ),
     );
   }
