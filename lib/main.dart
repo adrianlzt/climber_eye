@@ -258,6 +258,11 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  color: Colors.amberAccent,
+                  onPressed: widget.pickVideo,
+                ),
                 Row(
                   children: [
                     SizedBox(
@@ -406,6 +411,11 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  color: Colors.blue,
+                  onPressed: widget.pickVideo,
+                ),
                 Row(
                   children: [
                     if (widget.controller != null &&
