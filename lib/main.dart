@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:another_xlider/another_xlider.dart';
 import 'package:another_xlider/models/slider_step.dart';
 import 'package:another_xlider/models/handler.dart';
+import 'package:another_xlider/models/trackbar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -246,9 +247,17 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 Row(
                   children: [
                     SizedBox(
-                      height: 200,
+                      height: 300,
                       child: FlutterSlider(
                         axis: Axis.vertical,
+                        trackBar: FlutterSliderTrackBar(
+                          activeTrackBar: BoxDecoration(
+                            color: Colors.amberAccent,
+                          ),
+                          inactiveTrackBar: BoxDecoration(
+                            color: Colors.amberAccent.withOpacity(0.5),
+                          ),
+                        ),
                         min: 0,
                         max: 20,
                         values: [widget.playbackSpeed * 10],
@@ -275,12 +284,20 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                     ),
                     if (widget.controller != null &&
                         widget.controller!.value.isInitialized)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      Padding( // Remove this padding AI!
+                        padding: const EdgeInsets.all(0.0),
                         child: SizedBox(
-                          height: 200,
+                          height: 300,
                           child: FlutterSlider(
                             axis: Axis.vertical,
+                            trackBar: FlutterSliderTrackBar(
+                              activeTrackBar: BoxDecoration(
+                                color: Colors.amberAccent,
+                              ),
+                              inactiveTrackBar: BoxDecoration(
+                                color: Colors.amberAccent.withOpacity(0.5),
+                              ),
+                            ),
                             min: 0,
                             max: widget
                                 .controller!.value.duration.inMilliseconds
@@ -392,10 +409,10 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                   children: [
                     if (widget.controller != null &&
                         widget.controller!.value.isInitialized)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+                      Padding( // remove this Padding AI!
+                        padding: const EdgeInsets.all(0.0),
                         child: SizedBox(
-                          height: 200,
+                          height: 300,
                           child: FlutterSlider(
                             axis: Axis.vertical,
                             min: 0,
@@ -429,7 +446,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                         ),
                       ),
                     SizedBox(
-                      height: 200,
+                      height: 300,
                       child: FlutterSlider(
                         axis: Axis.vertical,
                         min: 0,
