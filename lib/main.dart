@@ -34,7 +34,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   VideoPlayerController? _controller;
   File? _videoFile;
-  double _playbackSpeed = 1.0; // Add playback speed variable
+  double _playbackSpeed = 1.0;
+  Duration _position = Duration.zero; // Current position
 
   Future<void> _pickVideo() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -52,7 +53,11 @@ class _MyHomePageState extends State<MyHomePage> {
       _controller = VideoPlayerController.file(_videoFile!)
         ..initialize().then((_) {
           setState(() {});
-          // Remove autoplay from here: _controller!.play();
+          _controller!.addListener(() {
+            setState(() {
+              _position = _controller!.value.position;
+            });
+          });
         });
     }
   }
@@ -61,6 +66,16 @@ class _MyHomePageState extends State<MyHomePage> {
   void dispose() {
     super.dispose();
     _controller?.dispose();
+  }
+
+    String _formatDuration(Duration? duration) {
+    if (duration == null) {
+      return '00:00';
+    }
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "$twoDigitMinutes:$twoDigitSeconds";
   }
 
   @override
@@ -96,6 +111,28 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 },
                 child: const Text('Play Video'),
+              ),
+
+            // Timeline slider and time display
+            if (_controller != null && _controller!.value.isInitialized)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(_formatDuration(_position)),
+                  Expanded(
+                    child: Slider(
+                      value: _position.inMilliseconds.toDouble(),
+                      min: 0,
+                      max: _controller!.value.duration.inMilliseconds.toDouble(),
+                      onChanged: (value) {
+                        setState(() {
+                          _controller!.seekTo(Duration(milliseconds: value.toInt()));
+                        });
+                      },
+                    ),
+                  ),
+                  Text(_formatDuration(_controller!.value.duration)),
+                ],
               ),
 
             // Playback speed controls
