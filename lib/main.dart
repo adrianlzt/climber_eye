@@ -224,216 +224,219 @@ class VideoPlayerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        // Sliders for the Left Video
-        if (isLeft)
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                    height: 200,
-                    child: FlutterSlider(
-                      axis: Axis.vertical,
-                      min: 0,
-                      max: 20,
-                      values: [playbackSpeed * 10],
-                      step: FlutterSliderStep(
-                        step: 1,
-                        isPercentRange: true,
-                      ),
-                      onDragging: (handlerIndex, lowerValue, upperValue) {
-                        onSpeedChanged(lowerValue / 10);
-                      },
-                      handler: FlutterSliderHandler(
-                        decoration: const BoxDecoration(),
-                        child: const Material(
-                          type: MaterialType.canvas,
-                          elevation: 3,
-                          child: Icon(
-                            Icons.fast_forward,
-                            size: 25,
-                            color: Colors.blue,
-                          ),
+    return Container( // Wrap the entire Row with a Container
+      color: isLeft ? Colors.blueGrey : Colors.amberAccent, // Set background color
+      child: Row(
+        children: [
+          // Sliders for the Left Video
+          if (isLeft)
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 200,
+                      child: FlutterSlider(
+                        axis: Axis.vertical,
+                        min: 0,
+                        max: 20,
+                        values: [playbackSpeed * 10],
+                        step: FlutterSliderStep(
+                          step: 1,
+                          isPercentRange: true,
                         ),
-                      ),
-                    ),
-                  ),
-                  if (controller != null && controller!.value.isInitialized)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        height: 200,
-                        child: FlutterSlider(
-                          axis: Axis.vertical,
-                          min: 0,
-                          max: controller!.value.duration.inMilliseconds
-                              .toDouble(),
-                          values: [position.inMilliseconds.toDouble()],
-                          onDragging: (handlerIndex, lowerValue, upperValue) {
-                            onSeekChanged(lowerValue);
-                          },
-                          onDragStarted: (handlerIndex, lowerValue, upperValue) =>
-                              onSeekStart(),
-                          onDragCompleted:
-                              (handlerIndex, lowerValue, upperValue) =>
-                                  onSeekEnd(),
-                          handler: FlutterSliderHandler( // Add handler here
-                            decoration: const BoxDecoration(),
-                            child: const Material(
-                              type: MaterialType.canvas,
-                              elevation: 3,
-                              child: Icon(
-                                Icons.schedule, // Use the schedule icon
-                                size: 25,
-                                color: Colors.blue,
-                              ),
+                        onDragging: (handlerIndex, lowerValue, upperValue) {
+                          onSpeedChanged(lowerValue / 10);
+                        },
+                        handler: FlutterSliderHandler(
+                          decoration: const BoxDecoration(),
+                          child: const Material(
+                            type: MaterialType.canvas,
+                            elevation: 3,
+                            child: Icon(
+                              Icons.fast_forward,
+                              size: 25,
+                              color: Colors.blue,
                             ),
                           ),
                         ),
                       ),
                     ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text("${playbackSpeed.toStringAsFixed(1)}x"),
-                  if (controller != null && controller!.value.isInitialized)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 45),
-                      child: Text("${formatDuration(position)} s"),
-                    )
-                ],
-              ),
-            ],
-          ),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  if (controller != null && controller!.value.isInitialized)
-                    GestureDetector(
-                      onTap: () {
-                        if (controller!.value.isPlaying) {
-                          controller!.pause();
-                        } else {
-                          controller!.play();
-                        }
-                      },
-                      child: AspectRatio(
-                        aspectRatio: controller!.value.aspectRatio,
-                        child: VideoPlayer(controller!),
+                    if (controller != null && controller!.value.isInitialized)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: 200,
+                          child: FlutterSlider(
+                            axis: Axis.vertical,
+                            min: 0,
+                            max: controller!.value.duration.inMilliseconds
+                                .toDouble(),
+                            values: [position.inMilliseconds.toDouble()],
+                            onDragging: (handlerIndex, lowerValue, upperValue) {
+                              onSeekChanged(lowerValue);
+                            },
+                            onDragStarted: (handlerIndex, lowerValue, upperValue) =>
+                                onSeekStart(),
+                            onDragCompleted:
+                                (handlerIndex, lowerValue, upperValue) =>
+                                    onSeekEnd(),
+                            handler: FlutterSliderHandler( // Add handler here
+                              decoration: const BoxDecoration(),
+                              child: const Material(
+                                type: MaterialType.canvas,
+                                elevation: 3,
+                                child: Icon(
+                                  Icons.schedule, // Use the schedule icon
+                                  size: 25,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  if (controller == null || !controller!.value.isInitialized)
-                    ElevatedButton(
-                      onPressed: pickVideo,
-                      child: const Text('Pick Video'),
-                    ),
-                ],
-              ),
-              if (controller != null &&
-                  controller!.value.isInitialized &&
-                  !controller!.value.isPlaying &&
-                  controller!.value.position == Duration.zero)
-                ElevatedButton(
-                  onPressed: () {
-                    controller!.play();
-                  },
-                  child: const Text('Play Video'),
+                  ],
                 ),
-            ],
+                Row(
+                  children: [
+                    Text("${playbackSpeed.toStringAsFixed(1)}x"),
+                    if (controller != null && controller!.value.isInitialized)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 45),
+                        child: Text("${formatDuration(position)} s"),
+                      )
+                  ],
+                ),
+              ],
+            ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (controller != null && controller!.value.isInitialized)
+                      GestureDetector(
+                        onTap: () {
+                          if (controller!.value.isPlaying) {
+                            controller!.pause();
+                          } else {
+                            controller!.play();
+                          }
+                        },
+                        child: AspectRatio(
+                          aspectRatio: controller!.value.aspectRatio,
+                          child: VideoPlayer(controller!),
+                        ),
+                      ),
+                    if (controller == null || !controller!.value.isInitialized)
+                      ElevatedButton(
+                        onPressed: pickVideo,
+                        child: const Text('Pick Video'),
+                      ),
+                  ],
+                ),
+                if (controller != null &&
+                    controller!.value.isInitialized &&
+                    !controller!.value.isPlaying &&
+                    controller!.value.position == Duration.zero)
+                  ElevatedButton(
+                    onPressed: () {
+                      controller!.play();
+                    },
+                    child: const Text('Play Video'),
+                  ),
+              ],
+            ),
           ),
-        ),
-        // Sliders for the Right Video
-        if (!isLeft)
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  if (controller != null && controller!.value.isInitialized)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        height: 200,
-                        child: FlutterSlider(
-                          axis: Axis.vertical,
-                          min: 0,
-                          max: controller!.value.duration.inMilliseconds
-                              .toDouble(),
-                          values: [position.inMilliseconds.toDouble()],
-                          onDragging: (handlerIndex, lowerValue, upperValue) {
-                            onSeekChanged(lowerValue);
-                          },
-                          onDragStarted: (handlerIndex, lowerValue, upperValue) =>
-                              onSeekStart(),
-                          onDragCompleted:
-                              (handlerIndex, lowerValue, upperValue) =>
-                                  onSeekEnd(),
-                          handler: FlutterSliderHandler( // Add handler here
-                            decoration: const BoxDecoration(),
-                            child: const Material(
-                              type: MaterialType.canvas,
-                              elevation: 3,
-                              child: Icon(
-                                Icons.schedule, // Use the schedule icon
-                                size: 25,
-                                color: Colors.blue,
+          // Sliders for the Right Video
+          if (!isLeft)
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    if (controller != null && controller!.value.isInitialized)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: 200,
+                          child: FlutterSlider(
+                            axis: Axis.vertical,
+                            min: 0,
+                            max: controller!.value.duration.inMilliseconds
+                                .toDouble(),
+                            values: [position.inMilliseconds.toDouble()],
+                            onDragging: (handlerIndex, lowerValue, upperValue) {
+                              onSeekChanged(lowerValue);
+                            },
+                            onDragStarted: (handlerIndex, lowerValue, upperValue) =>
+                                onSeekStart(),
+                            onDragCompleted:
+                                (handlerIndex, lowerValue, upperValue) =>
+                                    onSeekEnd(),
+                            handler: FlutterSliderHandler( // Add handler here
+                              decoration: const BoxDecoration(),
+                              child: const Material(
+                                type: MaterialType.canvas,
+                                elevation: 3,
+                                child: Icon(
+                                  Icons.schedule, // Use the schedule icon
+                                  size: 25,
+                                  color: Colors.blue,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  SizedBox(
-                    height: 200,
-                    child: FlutterSlider(
-                      axis: Axis.vertical,
-                      min: 0,
-                      max: 20,
-                      values: [playbackSpeed * 10],
-                      step: FlutterSliderStep(
-                        step: 1,
-                        isPercentRange: true,
-                      ),
-                      onDragging: (handlerIndex, lowerValue, upperValue) {
-                        onSpeedChanged(lowerValue / 10);
-                      },
-                      handler: FlutterSliderHandler(
-                        decoration: const BoxDecoration(),
-                        child: const Material(
-                          type: MaterialType.canvas,
-                          elevation: 3,
-                          child: Icon(
-                            Icons.fast_forward,
-                            size: 25,
-                            color: Colors.blue,
+                    SizedBox(
+                      height: 200,
+                      child: FlutterSlider(
+                        axis: Axis.vertical,
+                        min: 0,
+                        max: 20,
+                        values: [playbackSpeed * 10],
+                        step: FlutterSliderStep(
+                          step: 1,
+                          isPercentRange: true,
+                        ),
+                        onDragging: (handlerIndex, lowerValue, upperValue) {
+                          onSpeedChanged(lowerValue / 10);
+                        },
+                        handler: FlutterSliderHandler(
+                          decoration: const BoxDecoration(),
+                          child: const Material(
+                            type: MaterialType.canvas,
+                            elevation: 3,
+                            child: Icon(
+                              Icons.fast_forward,
+                              size: 25,
+                              color: Colors.blue,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  if (controller != null && controller!.value.isInitialized)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 45),
-                      child: Text("${formatDuration(position)} s"),
-                    ),
-                  Text("${playbackSpeed.toStringAsFixed(1)}x"),
-                ],
-              ),
-            ],
-          ),
-      ],
+                  ],
+                ),
+                Row(
+                  children: [
+                    if (controller != null && controller!.value.isInitialized)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 45),
+                        child: Text("${formatDuration(position)} s"),
+                      ),
+                    Text("${playbackSpeed.toStringAsFixed(1)}x"),
+                  ],
+                ),
+              ],
+            ),
+        ],
+      ),
     );
   }
 }
