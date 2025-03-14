@@ -13,13 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history for accurate versioning
+          fetch-depth: 0 # Fetch all history for accurate versioning
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.16.9' # Use a specific Flutter version, ideally matching your project
-          channel: 'stable'
+          flutter-version: "3.29.1" # Use a specific Flutter version, ideally matching your project
+          channel: "stable"
 
       - name: Install dependencies
         run: flutter pub get
@@ -35,10 +35,10 @@ jobs:
           MAJOR=$(echo $LATEST_TAG | cut -d. -f1)
           MINOR=$(echo $LATEST_TAG | cut -d. -f2)
           PATCH=$(echo $LATEST_TAG | cut -d. -f3)
-          
+
           # Analyze commit messages since last tag
           COMMITS=$(git log --pretty=format:"%s" ${LATEST_TAG}..HEAD)
-          
+
           # Check for breaking changes
           if echo "$COMMITS" | grep -q "BREAKING CHANGE"; then
             MAJOR=$((MAJOR + 1))
@@ -52,7 +52,7 @@ jobs:
           else
             PATCH=$((PATCH + 1))
           fi
-          
+
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
           git tag $NEW_VERSION
