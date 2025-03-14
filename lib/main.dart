@@ -322,7 +322,7 @@ class VideoPlayerWidget extends StatelessWidget {
                     isPercentRange: true,
                   ),
                   onDragging: (handlerIndex, lowerValue, upperValue) {
-                    onSpeedChanged(lowerValue / 10);  // Divide by 10 for actual speed
+                    onSpeedChanged(lowerValue / 10); // Divide by 10 for actual speed
                   },
                 ),
               ),
