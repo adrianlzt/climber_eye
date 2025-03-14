@@ -182,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   },
                   formatDuration: _formatDuration,
-                  isLeft: false,
+                  isLeft: false, // This is important for correct slider placement
                 ),
               ),
             ],
@@ -225,61 +225,65 @@ class VideoPlayerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row( // Wrap the sliders in a Row
-              children: [
-                SizedBox(
-                  height: 200,
-                  child: FlutterSlider(
-                    axis: Axis.vertical,
-                    min: 0,
-                    max: 20,
-                    values: [playbackSpeed * 10],
-                    step: FlutterSliderStep(
-                      step: 1, // Internal step of 1
-                      isPercentRange:
-                          true, // Important for rangeList to work correctly
+        // Sliders for the Left Video
+        if (isLeft)
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  SizedBox(
+                    height: 200,
+                    child: FlutterSlider(
+                      axis: Axis.vertical,
+                      min: 0,
+                      max: 20,
+                      values: [playbackSpeed * 10],
+                      step: FlutterSliderStep(
+                        step: 1,
+                        isPercentRange: true,
+                      ),
+                      onDragging: (handlerIndex, lowerValue, upperValue) {
+                        onSpeedChanged(lowerValue / 10);
+                      },
                     ),
-                    onDragging: (handlerIndex, lowerValue, upperValue) {
-                      onSpeedChanged(lowerValue / 10); // Divide by 10 for actual speed
-                    },
                   ),
-                ),
-                if (controller != null && controller!.value.isInitialized)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: 200,
-                      child: FlutterSlider(
-                        axis: Axis.vertical,
-                        min: 0,
-                        max: controller!.value.duration.inMilliseconds.toDouble(),
-                        values: [position.inMilliseconds.toDouble()],
-                        onDragging: (handlerIndex, lowerValue, upperValue) {
-                          onSeekChanged(lowerValue);
-                        },
-                        onDragStarted: (handlerIndex, lowerValue, upperValue) => onSeekStart(),
-                        onDragCompleted: (handlerIndex, lowerValue, upperValue) =>
-                            onSeekEnd(),
+                  if (controller != null && controller!.value.isInitialized)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 200,
+                        child: FlutterSlider(
+                          axis: Axis.vertical,
+                          min: 0,
+                          max: controller!.value.duration.inMilliseconds
+                              .toDouble(),
+                          values: [position.inMilliseconds.toDouble()],
+                          onDragging: (handlerIndex, lowerValue, upperValue) {
+                            onSeekChanged(lowerValue);
+                          },
+                          onDragStarted: (handlerIndex, lowerValue, upperValue) =>
+                              onSeekStart(),
+                          onDragCompleted:
+                              (handlerIndex, lowerValue, upperValue) =>
+                                  onSeekEnd(),
+                        ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-            Row( // Wrap the texts in a Row
-              children: [
-                Text("${playbackSpeed.toStringAsFixed(1)}x"),
-                if (controller != null && controller!.value.isInitialized)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(formatDuration(position)),
-                  )
-              ],
-            ),
-          ],
-        ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text("${playbackSpeed.toStringAsFixed(1)}x"),
+                  if (controller != null && controller!.value.isInitialized)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(formatDuration(position)),
+                    )
+                ],
+              ),
+            ],
+          ),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -321,6 +325,65 @@ class VideoPlayerWidget extends StatelessWidget {
             ],
           ),
         ),
+        // Sliders for the Right Video
+        if (!isLeft)
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  if (controller != null && controller!.value.isInitialized)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 200,
+                        child: FlutterSlider(
+                          axis: Axis.vertical,
+                          min: 0,
+                          max: controller!.value.duration.inMilliseconds
+                              .toDouble(),
+                          values: [position.inMilliseconds.toDouble()],
+                          onDragging: (handlerIndex, lowerValue, upperValue) {
+                            onSeekChanged(lowerValue);
+                          },
+                          onDragStarted: (handlerIndex, lowerValue, upperValue) =>
+                              onSeekStart(),
+                          onDragCompleted:
+                              (handlerIndex, lowerValue, upperValue) =>
+                                  onSeekEnd(),
+                        ),
+                      ),
+                    ),
+                  SizedBox(
+                    height: 200,
+                    child: FlutterSlider(
+                      axis: Axis.vertical,
+                      min: 0,
+                      max: 20,
+                      values: [playbackSpeed * 10],
+                      step: FlutterSliderStep(
+                        step: 1,
+                        isPercentRange: true,
+                      ),
+                      onDragging: (handlerIndex, lowerValue, upperValue) {
+                        onSpeedChanged(lowerValue / 10);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  if (controller != null && controller!.value.isInitialized)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(formatDuration(position)),
+                    ),
+                  Text("${playbackSpeed.toStringAsFixed(1)}x"),
+                ],
+              ),
+            ],
+          ),
       ],
     );
   }
