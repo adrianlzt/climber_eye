@@ -108,10 +108,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar( // Remove the entire AppBar
-      //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      //   title: Text(widget.title),
-      // ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth > constraints.maxHeight) {
@@ -296,15 +292,21 @@ class VideoPlayerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        controller != null && controller!.value.isInitialized
-            ? AspectRatio(
+        Stack(
+          alignment: Alignment.center, // Center the button
+          children: [
+            if (controller != null && controller!.value.isInitialized)
+              AspectRatio(
                 aspectRatio: controller!.value.aspectRatio,
                 child: VideoPlayer(controller!),
-              )
-            : ElevatedButton(
+              ),
+            if (controller == null || !controller!.value.isInitialized)
+              ElevatedButton(
                 onPressed: pickVideo,
                 child: const Text('Pick Video'),
               ),
+          ],
+        ),
         // Show a play button if the video is initialized but not playing
         if (controller != null &&
             controller!.value.isInitialized &&
