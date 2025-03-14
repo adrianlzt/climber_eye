@@ -101,12 +101,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String _formatDuration(Duration? duration) {
     if (duration == null) {
-      return '00:00';
+      return '00.000';
     }
     String twoDigits(int n) => n.toString().padLeft(2, '0');
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String threeDigits(int n) => n.toString().padLeft(3, '0');
     String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return "$twoDigitMinutes:$twoDigitSeconds";
+    String threeDigitMilliseconds =
+        threeDigits(duration.inMilliseconds.remainder(1000));
+    return "$twoDigitSeconds.$threeDigitMilliseconds";
   }
 
   @override
