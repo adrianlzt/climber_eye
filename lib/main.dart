@@ -267,7 +267,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                             child: Icon(
                               Icons.fast_forward,
                               size: 25,
-                              color: Colors.blue,
+                              color: Colors.amberAccent, // Changed color
                             ),
                           ),
                         ),
@@ -304,7 +304,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                                 child: Icon(
                                   Icons.schedule, // Use the schedule icon
                                   size: 25,
-                                  color: Colors.blue,
+                                  color: Colors.amberAccent, // Changed color
                                 ),
                               ),
                             ),
