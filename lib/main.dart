@@ -247,7 +247,7 @@ class VideoPlayerWidget extends StatelessWidget {
                       onDragging: (handlerIndex, lowerValue, upperValue) {
                         onSpeedChanged(lowerValue / 10);
                       },
-                      handler: FlutterSliderHandler( // Correct usage
+                      handler: FlutterSliderHandler(
                         decoration: const BoxDecoration(),
                         child: const Material(
                           type: MaterialType.canvas,
@@ -280,6 +280,18 @@ class VideoPlayerWidget extends StatelessWidget {
                           onDragCompleted:
                               (handlerIndex, lowerValue, upperValue) =>
                                   onSeekEnd(),
+                          handler: FlutterSliderHandler( // Add handler here
+                            decoration: const BoxDecoration(),
+                            child: const Material(
+                              type: MaterialType.canvas,
+                              elevation: 3,
+                              child: Icon(
+                                Icons.schedule, // Use the schedule icon
+                                size: 25,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -364,6 +376,18 @@ class VideoPlayerWidget extends StatelessWidget {
                           onDragCompleted:
                               (handlerIndex, lowerValue, upperValue) =>
                                   onSeekEnd(),
+                          handler: FlutterSliderHandler( // Add handler here
+                            decoration: const BoxDecoration(),
+                            child: const Material(
+                              type: MaterialType.canvas,
+                              elevation: 3,
+                              child: Icon(
+                                Icons.schedule, // Use the schedule icon
+                                size: 25,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -381,7 +405,7 @@ class VideoPlayerWidget extends StatelessWidget {
                       onDragging: (handlerIndex, lowerValue, upperValue) {
                         onSpeedChanged(lowerValue / 10);
                       },
-                      handler: FlutterSliderHandler( //correct usage
+                      handler: FlutterSliderHandler(
                         decoration: const BoxDecoration(),
                         child: const Material(
                           type: MaterialType.canvas,
