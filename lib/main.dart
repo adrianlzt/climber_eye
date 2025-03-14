@@ -108,157 +108,82 @@ class _MyHomePageState extends State<MyHomePage> {
     return "$twoDigitMinutes:$twoDigitSeconds";
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          if (constraints.maxWidth > constraints.maxHeight) {
-            // Landscape
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Expanded(
-                  child: VideoPlayerWidget(
-                    controller: _controller1,
-                    pickVideo: () => _pickVideo(1),
-                    playbackSpeed: _playbackSpeed1,
-                    position: _position1,
-                    isSeeking: _isSeeking1,
-                    onSpeedChanged: (value) {
-                      setState(() {
-                        _playbackSpeed1 = value;
-                        _controller1!.setPlaybackSpeed(_playbackSpeed1);
-                      });
-                    },
-                    onSeekChanged: (value) {
-                      setState(() {
-                        _position1 = Duration(milliseconds: value.toInt());
-                        _controller1!.seekTo(_position1);
-                      });
-                    },
-                    onSeekStart: () {
-                      setState(() {
-                        _isSeeking1 = true;
-                      });
-                    },
-                    onSeekEnd: () {
-                      setState(() {
-                        _isSeeking1 = false;
-                      });
-                    },
-                    formatDuration: _formatDuration,
-                  ),
-                ),
-                Expanded(
-                  child: VideoPlayerWidget(
-                    controller: _controller2,
-                    pickVideo: () => _pickVideo(2),
-                    playbackSpeed: _playbackSpeed2,
-                    position: _position2,
-                    isSeeking: _isSeeking2,
-                    onSpeedChanged: (value) {
-                      setState(() {
-                        _playbackSpeed2 = value;
-                        _controller2!.setPlaybackSpeed(_playbackSpeed2);
-                      });
-                    },
-                    onSeekChanged: (value) {
-                      setState(() {
-                        _position2 = Duration(milliseconds: value.toInt());
-                        _controller2!.seekTo(_position2);
-                      });
-                    },
-                    onSeekStart: () {
-                      setState(() {
-                        _isSeeking2 = true;
-                      });
-                    },
-                    onSeekEnd: () {
-                      setState(() {
-                        _isSeeking2 = false;
-                      });
-                    },
-                    formatDuration: _formatDuration,
-                  ),
-                ),
-              ],
-            );
-          } else {
-            // Portrait
-            return SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    // Video Player 1
-                    VideoPlayerWidget(
-                      controller: _controller1,
-                      pickVideo: () => _pickVideo(1),
-                      playbackSpeed: _playbackSpeed1,
-                      position: _position1,
-                      isSeeking: _isSeeking1,
-                      onSpeedChanged: (value) {
-                        setState(() {
-                          _playbackSpeed1 = value;
-                          _controller1!.setPlaybackSpeed(_playbackSpeed1);
-                        });
-                      },
-                      onSeekChanged: (value) {
-                        setState(() {
-                          _position1 = Duration(milliseconds: value.toInt());
-                          _controller1!.seekTo(_position1);
-                        });
-                      },
-                      onSeekStart: () {
-                        setState(() {
-                          _isSeeking1 = true;
-                        });
-                      },
-                      onSeekEnd: () {
-                        setState(() {
-                          _isSeeking1 = false;
-                        });
-                      },
-                      formatDuration: _formatDuration,
-                    ),
-                    const SizedBox(height: 40),
-                    // Video Player 2
-                    VideoPlayerWidget(
-                      controller: _controller2,
-                      pickVideo: () => _pickVideo(2),
-                      playbackSpeed: _playbackSpeed2,
-                      position: _position2,
-                      isSeeking: _isSeeking2,
-                      onSpeedChanged: (value) {
-                        setState(() {
-                          _playbackSpeed2 = value;
-                          _controller2!.setPlaybackSpeed(_playbackSpeed2);
-                        });
-                      },
-                      onSeekChanged: (value) {
-                        setState(() {
-                          _position2 = Duration(milliseconds: value.toInt());
-                          _controller2!.seekTo(_position2);
-                        });
-                      },
-                      onSeekStart: () {
-                        setState(() {
-                          _isSeeking2 = true;
-                        });
-                      },
-                      onSeekEnd: () {
-                        setState(() {
-                          _isSeeking2 = false;
-                        });
-                      },
-                      formatDuration: _formatDuration,
-                    ),
-                  ],
+          // Removed the if/else for landscape/portrait
+          // Always use a Row layout
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Expanded(
+                child: VideoPlayerWidget(
+                  controller: _controller1,
+                  pickVideo: () => _pickVideo(1),
+                  playbackSpeed: _playbackSpeed1,
+                  position: _position1,
+                  isSeeking: _isSeeking1,
+                  onSpeedChanged: (value) {
+                    setState(() {
+                      _playbackSpeed1 = value;
+                      _controller1!.setPlaybackSpeed(_playbackSpeed1);
+                    });
+                  },
+                  onSeekChanged: (value) {
+                    setState(() {
+                      _position1 = Duration(milliseconds: value.toInt());
+                      _controller1!.seekTo(_position1);
+                    });
+                  },
+                  onSeekStart: () {
+                    setState(() {
+                      _isSeeking1 = true;
+                    });
+                  },
+                  onSeekEnd: () {
+                    setState(() {
+                      _isSeeking1 = false;
+                    });
+                  },
+                  formatDuration: _formatDuration,
                 ),
               ),
-            );
-          }
+              Expanded(
+                child: VideoPlayerWidget(
+                  controller: _controller2,
+                  pickVideo: () => _pickVideo(2),
+                  playbackSpeed: _playbackSpeed2,
+                  position: _position2,
+                  isSeeking: _isSeeking2,
+                  onSpeedChanged: (value) {
+                    setState(() {
+                      _playbackSpeed2 = value;
+                      _controller2!.setPlaybackSpeed(_playbackSpeed2);
+                    });
+                  },
+                  onSeekChanged: (value) {
+                    setState(() {
+                      _position2 = Duration(milliseconds: value.toInt());
+                      _controller2!.seekTo(_position2);
+                    });
+                  },
+                  onSeekStart: () {
+                    setState(() {
+                      _isSeeking2 = true;
+                    });
+                  },
+                  onSeekEnd: () {
+                    setState(() {
+                      _isSeeking2 = false;
+                    });
+                  },
+                  formatDuration: _formatDuration,
+                ),
+              ),
+            ],
+          );
         },
       ),
     );
@@ -293,85 +218,90 @@ class VideoPlayerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Stack(
-            alignment: Alignment.center,
+    return Row( // Use Row to place video and slider side-by-side
+      children: [
+        Expanded( // Video player takes up most of the space
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (controller != null && controller!.value.isInitialized)
-                GestureDetector(
-                  onTap: () {
-                    if (controller!.value.isPlaying) {
-                      controller!.pause();
-                    } else {
-                      controller!.play();
-                    }
-                  },
-                  child: AspectRatio(
-                    aspectRatio: controller!.value.aspectRatio,
-                    child: VideoPlayer(controller!),
-                  ),
-                ),
-              if (controller == null || !controller!.value.isInitialized)
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  if (controller != null && controller!.value.isInitialized)
+                    GestureDetector(
+                      onTap: () {
+                        if (controller!.value.isPlaying) {
+                          controller!.pause();
+                        } else {
+                          controller!.play();
+                        }
+                      },
+                      child: AspectRatio(
+                        aspectRatio: controller!.value.aspectRatio,
+                        child: VideoPlayer(controller!),
+                      ),
+                    ),
+                  if (controller == null || !controller!.value.isInitialized)
+                    ElevatedButton(
+                      onPressed: pickVideo,
+                      child: const Text('Pick Video'),
+                    ),
+                ],
+              ),
+              // Show a play button if video initialized but not playing
+              if (controller != null &&
+                  controller!.value.isInitialized &&
+                  !controller!.value.isPlaying &&
+                  controller!.value.position == Duration.zero)
                 ElevatedButton(
-                  onPressed: pickVideo,
-                  child: const Text('Pick Video'),
+                  onPressed: () {
+                    controller!.play();
+                  },
+                  child: const Text('Play Video'),
+                ),
+
+              // Timeline slider and time display
+              if (controller != null && controller!.value.isInitialized)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(formatDuration(position)),
+                    Expanded(
+                      child: Slider(
+                        value: position.inMilliseconds.toDouble(),
+                        min: 0,
+                        max: controller!.value.duration.inMilliseconds.toDouble(),
+                        onChanged: onSeekChanged,
+                        onChangeStart: (_) => onSeekStart(),
+                        onChangeEnd: (_) => onSeekEnd(),
+                      ),
+                    ),
+                    Text(formatDuration(controller!.value.duration)),
+                  ],
                 ),
             ],
           ),
-          // Show a play button if the video is initialized but not playing
-          if (controller != null &&
-              controller!.value.isInitialized &&
-              !controller!.value.isPlaying &&
-              controller!.value.position == Duration.zero)
-            ElevatedButton(
-              onPressed: () {
-                controller!.play();
-              },
-              child: const Text('Play Video'),
+        ),
+        // Vertical slider and speed display
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 200, // Adjust height as needed
+              child: FlutterSlider(
+                axis: Axis.vertical,
+                values: [playbackSpeed],
+                min: 0.5,
+                max: 2.0,
+                onDragging: (handlerIndex, lowerValue, upperValue) {
+                  onSpeedChanged(lowerValue);
+                },
+              ),
             ),
-
-          // Timeline slider and time display
-          if (controller != null && controller!.value.isInitialized)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(formatDuration(position)),
-                Expanded(
-                  child: Slider(
-                    value: position.inMilliseconds.toDouble(),
-                    min: 0,
-                    max: controller!.value.duration.inMilliseconds.toDouble(),
-                    onChanged: onSeekChanged,
-                    onChangeStart: (_) => onSeekStart(),
-                    onChangeEnd: (_) => onSeekEnd(),
-                  ),
-                ),
-                Text(formatDuration(controller!.value.duration)),
-              ],
-            ),
-          // Playback speed controls
-          if (controller != null && controller!.value.isInitialized)
-            Column(
-              children: [
-                SizedBox(
-                    height: 100,
-                    child: FlutterSlider(
-                      axis: Axis.vertical,
-                      values: [playbackSpeed],
-                      min: 0.5,
-                      max: 2.0,
-                      onDragging: (handlerIndex, lowerValue, upperValue) {
-                        onSpeedChanged(lowerValue);
-                      },
-                    )),
-                Text("${playbackSpeed.toStringAsFixed(1)}x"),
-              ],
-            ),
-        ],
-      ),
+            Text("${playbackSpeed.toStringAsFixed(1)}x"),
+          ],
+        ),
+      ],
     );
   }
 }
