@@ -384,6 +384,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                       ),
                   ],
                 ),
+                // Remove this button AI!
                 if (widget.controller != null &&
                     widget.controller!.value.isInitialized &&
                     !widget.controller!.value.isPlaying &&
