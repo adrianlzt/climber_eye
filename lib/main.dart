@@ -246,33 +246,33 @@ class VideoPlayerWidget extends StatelessWidget {
               ),
             ),
             Text("${playbackSpeed.toStringAsFixed(1)}x"),
+            if (controller != null && controller!.value.isInitialized)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  height: 200,
+                  child: FlutterSlider(
+                    axis: Axis.vertical,
+                    min: 0,
+                    max: controller!.value.duration.inMilliseconds.toDouble(),
+                    values: [position.inMilliseconds.toDouble()],
+                    onDragging: (handlerIndex, lowerValue, upperValue) {
+                      onSeekChanged(lowerValue);
+                    },
+                    onDragStarted: (handlerIndex, lowerValue, upperValue) => onSeekStart(),
+                    onDragCompleted: (handlerIndex, lowerValue, upperValue) =>
+                        onSeekEnd(),
+                  ),
+                ),
+              ),
+            if (controller != null && controller!.value.isInitialized)
+              Text(formatDuration(position)),
           ],
         ),
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (controller != null && controller!.value.isInitialized)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: 200,
-                    child: FlutterSlider(
-                      axis: Axis.vertical,
-                      min: 0,
-                      max: controller!.value.duration.inMilliseconds.toDouble(),
-                      values: [position.inMilliseconds.toDouble()],
-                      onDragging: (handlerIndex, lowerValue, upperValue) {
-                        onSeekChanged(lowerValue);
-                      },
-                      onDragStarted: (handlerIndex, lowerValue, upperValue) => onSeekStart(),
-                      onDragCompleted: (handlerIndex, lowerValue, upperValue) =>
-                          onSeekEnd(),
-                    ),
-                  ),
-                ),
-              if (controller != null && controller!.value.isInitialized)
-                Text(formatDuration(position)),
               Stack(
                 alignment: Alignment.center,
                 children: [
