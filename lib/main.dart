@@ -146,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   },
                   formatDuration: _formatDuration,
-                  isLeft: true, // Add isLeft parameter
+                  isLeft: true,
                 ),
               ),
               Expanded(
@@ -179,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   },
                   formatDuration: _formatDuration,
-                  isLeft: false, // Add isLeft parameter
+                  isLeft: false,
                 ),
               ),
             ],
@@ -201,7 +201,7 @@ class VideoPlayerWidget extends StatelessWidget {
   final VoidCallback onSeekStart;
   final VoidCallback onSeekEnd;
   final String Function(Duration?) formatDuration;
-  final bool isLeft; // New parameter to determine slider position
+  final bool isLeft;
 
   const VideoPlayerWidget({
     super.key,
@@ -215,28 +215,31 @@ class VideoPlayerWidget extends StatelessWidget {
     required this.onSeekStart,
     required this.onSeekEnd,
     required this.formatDuration,
-    required this.isLeft, // Include in constructor
+    required this.isLeft,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Conditionally arrange the slider and video based on isLeft
     return Row(
       children: [
         if (isLeft) ...[
-          // Vertical slider and speed display for left video
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 200, // Adjust height as needed
+                height: 200,
                 child: FlutterSlider(
                   axis: Axis.vertical,
-                  values: [playbackSpeed],
-                  min: 0.5,
-                  max: 2.0,
+                  min: 0,
+                  max: 20,
+                  values: [playbackSpeed * 10],
+                  step: FlutterSliderStep(
+                    step: 1, // Internal step of 1
+                    isPercentRange:
+                        true, // Important for rangeList to work correctly
+                  ),
                   onDragging: (handlerIndex, lowerValue, upperValue) {
-                    onSpeedChanged(lowerValue);
+                    onSpeedChanged(lowerValue / 10); // Divide by 10 for actual speed
                   },
                 ),
               ),
@@ -245,7 +248,6 @@ class VideoPlayerWidget extends StatelessWidget {
           ),
         ],
         Expanded(
-          // Video player takes up most of the space
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -273,7 +275,6 @@ class VideoPlayerWidget extends StatelessWidget {
                     ),
                 ],
               ),
-              // Show a play button if the video is initialized but not playing
               if (controller != null &&
                   controller!.value.isInitialized &&
                   !controller!.value.isPlaying &&
@@ -284,8 +285,6 @@ class VideoPlayerWidget extends StatelessWidget {
                   },
                   child: const Text('Play Video'),
                 ),
-
-              // Timeline slider and time display
               if (controller != null && controller!.value.isInitialized)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -308,19 +307,22 @@ class VideoPlayerWidget extends StatelessWidget {
           ),
         ),
         if (!isLeft) ...[
-          // Vertical slider and speed display for right video
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 200, // Adjust height as needed
+                height: 200,
                 child: FlutterSlider(
                   axis: Axis.vertical,
-                  values: [playbackSpeed],
-                  min: 0.5,
-                  max: 2.0,
+                  min: 0,
+                  max: 20,
+                  values: [playbackSpeed * 10],
+                  step: FlutterSliderStep(
+                    step: 1, //internal step
+                    isPercentRange: true,
+                  ),
                   onDragging: (handlerIndex, lowerValue, upperValue) {
-                    onSpeedChanged(lowerValue);
+                    onSpeedChanged(lowerValue / 10);  // Divide by 10 for actual speed
                   },
                 ),
               ),
