@@ -312,6 +312,7 @@ class VideoPlayerWidget extends StatelessWidget {
               ],
             ),
           Expanded(
+            // Wrap this part with a Container with red background color. AI!
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
