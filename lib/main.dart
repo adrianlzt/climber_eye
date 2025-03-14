@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:another_xlider/another_xlider.dart';
 import 'package:another_xlider/models/slider_step.dart';
+import 'package:another_xlider/models/handler.dart';
 
 void main() {
   runApp(const MyApp());
@@ -250,10 +251,9 @@ class VideoPlayerWidget extends StatelessWidget {
                         decoration: const BoxDecoration(),
                         child: const Material(
                           type: MaterialType.canvas,
-                          color: Colors.transparent,
                           elevation: 3,
                           child: Icon(
-                            Icons.speed, // Use the speed icon
+                            Icons.fast_forward,
                             size: 25,
                             color: Colors.blue,
                           ),
@@ -385,10 +385,9 @@ class VideoPlayerWidget extends StatelessWidget {
                         decoration: const BoxDecoration(),
                         child: const Material(
                           type: MaterialType.canvas,
-                          color: Colors.transparent,
                           elevation: 3,
                           child: Icon(
-                            Icons.speed, // Use the speed icon
+                            Icons.fast_forward,
                             size: 25,
                             color: Colors.blue,
                           ),
