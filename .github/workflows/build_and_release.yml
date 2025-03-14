@@ -51,7 +51,7 @@ jobs:
             MINOR=$((MINOR + 1))
             PATCH=0
           # Default to patch increase
-          else
+          else:
             PATCH=$((PATCH + 1))
           fi
 
@@ -67,7 +67,7 @@ jobs:
       - name: Sign APK # Added signing step
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore.jks
-          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore keystore.jks -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} build/app/outputs/flutter-apk/app-release.apk ${{ secrets.KEY_ALIAS }}
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA256 -keystore keystore.jks -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} build/app/outputs/flutter-apk/app-release.apk ${{ secrets.KEY_ALIAS }}
           # Verify the APK is signed
           jarsigner -verify -verbose -certs build/app/outputs/flutter-apk/app-release.apk
 
