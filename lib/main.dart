@@ -312,7 +312,6 @@ class VideoPlayerWidget extends StatelessWidget {
               ],
             ),
           Expanded(
-            // Wrap this part with a Container with red background color. AI!
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -328,6 +327,7 @@ class VideoPlayerWidget extends StatelessWidget {
                             controller!.play();
                           }
                         },
+                        // wrap this AspectRatio in a container with red background AI!
                         child: AspectRatio(
                           aspectRatio: controller!.value.aspectRatio,
                           child: VideoPlayer(controller!),
