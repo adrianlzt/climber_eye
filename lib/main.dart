@@ -62,7 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _initializeVideoPlayer(int videoNumber) async {
     if (videoNumber == 1 && _videoFile1 != null) {
-      _controller1 = VideoPlayerController.file(_videoFile1!)
+      _controller1 = VideoPlayerController.file(_videoFile1!,
+          videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true))
         ..initialize().then((_) {
           setState(() {});
           _controller1!.addListener(() {
@@ -74,7 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         });
     } else if (videoNumber == 2 && _videoFile2 != null) {
-      _controller2 = VideoPlayerController.file(_videoFile2!)
+      _controller2 = VideoPlayerController.file(_videoFile2!,
+          videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true))
         ..initialize().then((_) {
           setState(() {});
           _controller2!.addListener(() {
