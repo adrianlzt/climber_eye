@@ -7,7 +7,7 @@ plugins {
 android {
     ndkVersion = "27.0.12077973"
     namespace = "com.example.climber_eye"
-    compileSdk = 34
+    compileSdk = 35
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -44,4 +44,3 @@ android {
 
 dependencies {
 }
-
