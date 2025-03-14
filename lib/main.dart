@@ -34,6 +34,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   VideoPlayerController? _controller;
   File? _videoFile;
+  double _playbackSpeed = 1.0; // Add playback speed variable
 
   Future<void> _pickVideo() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -95,6 +96,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   });
                 },
                 child: const Text('Play Video'),
+              ),
+
+            // Playback speed controls
+            if (_controller != null && _controller!.value.isInitialized)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 150,
+                    child: Slider(
+                      min: 0.5,
+                      max: 2.0,
+                      value: _playbackSpeed,
+                      onChanged: (value) {
+                        setState(() {
+                          _playbackSpeed = value;
+                          _controller!.setPlaybackSpeed(_playbackSpeed);
+                        });
+                      },
+                    ),
+                  ),
+                  Text("${_playbackSpeed.toStringAsFixed(1)}x"),
+                ],
               ),
           ],
         ),
