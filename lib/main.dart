@@ -290,84 +290,87 @@ class VideoPlayerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Stack(
-          alignment: Alignment.center, // Center the button
-          children: [
-            if (controller != null && controller!.value.isInitialized)
-              AspectRatio(
-                aspectRatio: controller!.value.aspectRatio,
-                child: VideoPlayer(controller!),
-              ),
-            if (controller == null || !controller!.value.isInitialized)
-              ElevatedButton(
-                onPressed: pickVideo,
-                child: const Text('Pick Video'),
-              ),
-          ],
-        ),
-        // Show a play button if the video is initialized but not playing
-        if (controller != null &&
-            controller!.value.isInitialized &&
-            !controller!.value.isPlaying &&
-            controller!.value.position == Duration.zero)
-          ElevatedButton(
-            onPressed: () {
-              controller!.play();
-            },
-            child: const Text('Play Video'),
-          ),
-
-        // Timeline slider and time display
-        if (controller != null && controller!.value.isInitialized)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return Expanded( // Wrap the Column with Expanded
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, // Center the content vertically
+        children: [
+          Stack(
+            alignment: Alignment.center, // Center the button
             children: [
-              Text(formatDuration(position)),
-              Expanded(
-                child: Slider(
-                  value: position.inMilliseconds.toDouble(),
-                  min: 0,
-                  max: controller!.value.duration.inMilliseconds.toDouble(),
-                  onChanged: onSeekChanged,
-                  onChangeStart: (_) => onSeekStart(),
-                  onChangeEnd: (_) => onSeekEnd(),
+              if (controller != null && controller!.value.isInitialized)
+                AspectRatio(
+                  aspectRatio: controller!.value.aspectRatio,
+                  child: VideoPlayer(controller!),
                 ),
-              ),
-              Text(formatDuration(controller!.value.duration)),
+              if (controller == null || !controller!.value.isInitialized)
+                ElevatedButton(
+                  onPressed: pickVideo,
+                  child: const Text('Pick Video'),
+                ),
             ],
           ),
-
-        // Playback speed controls
-        if (controller != null && controller!.value.isInitialized)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 150,
-                child: Slider(
-                  min: 0.5,
-                  max: 2.0,
-                  value: playbackSpeed,
-                  onChanged: onSpeedChanged,
-                ),
-              ),
-              Text("${playbackSpeed.toStringAsFixed(1)}x"),
-            ],
-          ),
-        if (controller != null && controller!.value.isInitialized)
-          FloatingActionButton(
-            onPressed: () {
-                controller!.value.isPlaying
-                    ? controller!.pause()
-                    : controller!.play();
-            },
-            child: Icon(
-              controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
+          // Show a play button if the video is initialized but not playing
+          if (controller != null &&
+              controller!.value.isInitialized &&
+              !controller!.value.isPlaying &&
+              controller!.value.position == Duration.zero)
+            ElevatedButton(
+              onPressed: () {
+                controller!.play();
+              },
+              child: const Text('Play Video'),
             ),
-          )
-      ],
+
+          // Timeline slider and time display
+          if (controller != null && controller!.value.isInitialized)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(formatDuration(position)),
+                Expanded(
+                  child: Slider(
+                    value: position.inMilliseconds.toDouble(),
+                    min: 0,
+                    max: controller!.value.duration.inMilliseconds.toDouble(),
+                    onChanged: onSeekChanged,
+                    onChangeStart: (_) => onSeekStart(),
+                    onChangeEnd: (_) => onSeekEnd(),
+                  ),
+                ),
+                Text(formatDuration(controller!.value.duration)),
+              ],
+            ),
+
+          // Playback speed controls
+          if (controller != null && controller!.value.isInitialized)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 150,
+                  child: Slider(
+                    min: 0.5,
+                    max: 2.0,
+                    value: playbackSpeed,
+                    onChanged: onSpeedChanged,
+                  ),
+                ),
+                Text("${playbackSpeed.toStringAsFixed(1)}x"),
+              ],
+            ),
+          if (controller != null && controller!.value.isInitialized)
+            FloatingActionButton(
+              onPressed: () {
+                  controller!.value.isPlaying
+                      ? controller!.pause()
+                      : controller!.play();
+              },
+              child: Icon(
+                controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
+              ),
+            )
+        ],
+      ),
     );
   }
 }
