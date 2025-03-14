@@ -384,17 +384,6 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                       ),
                   ],
                 ),
-                // Remove this button AI!
-                if (widget.controller != null &&
-                    widget.controller!.value.isInitialized &&
-                    !widget.controller!.value.isPlaying &&
-                    widget.controller!.value.position == Duration.zero)
-                  ElevatedButton(
-                    onPressed: () {
-                      widget.controller!.play();
-                    },
-                    child: const Text('Play Video'),
-                  ),
               ],
             ),
           ),
