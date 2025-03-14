@@ -290,17 +290,26 @@ class VideoPlayerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded( // Wrap the Column with Expanded
+    return Expanded(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center, // Center the content vertically
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Stack(
-            alignment: Alignment.center, // Center the button
+            alignment: Alignment.center,
             children: [
               if (controller != null && controller!.value.isInitialized)
-                AspectRatio(
-                  aspectRatio: controller!.value.aspectRatio,
-                  child: VideoPlayer(controller!),
+                GestureDetector( // Wrap AspectRatio with GestureDetector
+                  onTap: () {
+                    if (controller!.value.isPlaying) {
+                      controller!.pause();
+                    } else {
+                      controller!.play();
+                    }
+                  },
+                  child: AspectRatio(
+                    aspectRatio: controller!.value.aspectRatio,
+                    child: VideoPlayer(controller!),
+                  ),
                 ),
               if (controller == null || !controller!.value.isInitialized)
                 ElevatedButton(
@@ -358,17 +367,6 @@ class VideoPlayerWidget extends StatelessWidget {
                 Text("${playbackSpeed.toStringAsFixed(1)}x"),
               ],
             ),
-          if (controller != null && controller!.value.isInitialized)
-            FloatingActionButton(
-              onPressed: () {
-                  controller!.value.isPlaying
-                      ? controller!.pause()
-                      : controller!.play();
-              },
-              child: Icon(
-                controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
-              ),
-            )
         ],
       ),
     );
