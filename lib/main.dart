@@ -284,45 +284,42 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                     ),
                     if (widget.controller != null &&
                         widget.controller!.value.isInitialized)
-                      Padding( // Remove this padding AI!
-                        padding: const EdgeInsets.all(0.0),
-                        child: SizedBox(
-                          height: 300,
-                          child: FlutterSlider(
-                            axis: Axis.vertical,
-                            trackBar: FlutterSliderTrackBar(
-                              activeTrackBar: BoxDecoration(
-                                color: Colors.amberAccent,
-                              ),
-                              inactiveTrackBar: BoxDecoration(
-                                color: Colors.amberAccent.withOpacity(0.5),
-                              ),
+                      SizedBox(
+                        height: 300,
+                        child: FlutterSlider(
+                          axis: Axis.vertical,
+                          trackBar: FlutterSliderTrackBar(
+                            activeTrackBar: BoxDecoration(
+                              color: Colors.amberAccent,
                             ),
-                            min: 0,
-                            max: widget
-                                .controller!.value.duration.inMilliseconds
-                                .toDouble(),
-                            values: [widget.position.inMilliseconds.toDouble()],
-                            onDragging: (handlerIndex, lowerValue, upperValue) {
-                              widget.onSeekChanged(lowerValue);
-                            },
-                            onDragStarted:
-                                (handlerIndex, lowerValue, upperValue) =>
-                                    widget.onSeekStart(),
-                            onDragCompleted:
-                                (handlerIndex, lowerValue, upperValue) =>
-                                    widget.onSeekEnd(),
-                            handler: FlutterSliderHandler(
-                              // Add handler here
-                              decoration: const BoxDecoration(),
-                              child: const Material(
-                                type: MaterialType.canvas,
-                                elevation: 3,
-                                child: Icon(
-                                  Icons.schedule, // Use the schedule icon
-                                  size: 25,
-                                  color: Colors.amberAccent, // Changed color
-                                ),
+                            inactiveTrackBar: BoxDecoration(
+                              color: Colors.amberAccent.withOpacity(0.5),
+                            ),
+                          ),
+                          min: 0,
+                          max: widget
+                              .controller!.value.duration.inMilliseconds
+                              .toDouble(),
+                          values: [widget.position.inMilliseconds.toDouble()],
+                          onDragging: (handlerIndex, lowerValue, upperValue) {
+                            widget.onSeekChanged(lowerValue);
+                          },
+                          onDragStarted:
+                              (handlerIndex, lowerValue, upperValue) =>
+                                  widget.onSeekStart(),
+                          onDragCompleted:
+                              (handlerIndex, lowerValue, upperValue) =>
+                                  widget.onSeekEnd(),
+                          handler: FlutterSliderHandler(
+                            // Add handler here
+                            decoration: const BoxDecoration(),
+                            child: const Material(
+                              type: MaterialType.canvas,
+                              elevation: 3,
+                              child: Icon(
+                                Icons.schedule, // Use the schedule icon
+                                size: 25,
+                                color: Colors.amberAccent, // Changed color
                               ),
                             ),
                           ),
@@ -409,37 +406,34 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                   children: [
                     if (widget.controller != null &&
                         widget.controller!.value.isInitialized)
-                      Padding( // remove this Padding AI!
-                        padding: const EdgeInsets.all(0.0),
-                        child: SizedBox(
-                          height: 300,
-                          child: FlutterSlider(
-                            axis: Axis.vertical,
-                            min: 0,
-                            max: widget
-                                .controller!.value.duration.inMilliseconds
-                                .toDouble(),
-                            values: [widget.position.inMilliseconds.toDouble()],
-                            onDragging: (handlerIndex, lowerValue, upperValue) {
-                              widget.onSeekChanged(lowerValue);
-                            },
-                            onDragStarted:
-                                (handlerIndex, lowerValue, upperValue) =>
-                                    widget.onSeekStart(),
-                            onDragCompleted:
-                                (handlerIndex, lowerValue, upperValue) =>
-                                    widget.onSeekEnd(),
-                            handler: FlutterSliderHandler(
-                              // Add handler here
-                              decoration: const BoxDecoration(),
-                              child: const Material(
-                                type: MaterialType.canvas,
-                                elevation: 3,
-                                child: Icon(
-                                  Icons.schedule, // Use the schedule icon
-                                  size: 25,
-                                  color: Colors.blue,
-                                ),
+                      SizedBox(
+                        height: 300,
+                        child: FlutterSlider(
+                          axis: Axis.vertical,
+                          min: 0,
+                          max: widget
+                              .controller!.value.duration.inMilliseconds
+                              .toDouble(),
+                          values: [widget.position.inMilliseconds.toDouble()],
+                          onDragging: (handlerIndex, lowerValue, upperValue) {
+                            widget.onSeekChanged(lowerValue);
+                          },
+                          onDragStarted:
+                              (handlerIndex, lowerValue, upperValue) =>
+                                  widget.onSeekStart(),
+                          onDragCompleted:
+                              (handlerIndex, lowerValue, upperValue) =>
+                                  widget.onSeekEnd(),
+                          handler: FlutterSliderHandler(
+                            // Add handler here
+                            decoration: const BoxDecoration(),
+                            child: const Material(
+                              type: MaterialType.canvas,
+                              elevation: 3,
+                              child: Icon(
+                                Icons.schedule, // Use the schedule icon
+                                size: 25,
+                                color: Colors.blue,
                               ),
                             ),
                           ),
