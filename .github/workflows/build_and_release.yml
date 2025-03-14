@@ -64,12 +64,15 @@ jobs:
       - name: Build APK
         run: flutter build apk --release # Build in release mode
 
-      - name: Sign APK # Added signing step
+      - name: Align APK
+        run: |
+          zipalign -v -p 4 build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/app-release-aligned.apk
+
+      - name: Sign APK
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore.jks
-          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA256 -keystore keystore.jks -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} build/app/outputs/flutter-apk/app-release.apk ${{ secrets.KEY_ALIAS }}
-          # Verify the APK is signed
-          jarsigner -verify -verbose -certs build/app/outputs/flutter-apk/app-release.apk
+          apksigner sign --ks keystore.jks --ks-pass pass:"${{ secrets.KEYSTORE_PASSWORD }}" --ks-key-alias "${{ secrets.KEY_ALIAS }}" --key-pass pass:"${{ secrets.KEY_PASSWORD }}" --out build/app/outputs/flutter-apk/app-release-signed.apk build/app/outputs/flutter-apk/app-release-aligned.apk
+          apksigner verify --verbose build/app/outputs/flutter-apk/app-release-signed.apk
 
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
@@ -79,4 +82,4 @@ jobs:
           prerelease: false
           title: "Release ${{ env.NEW_VERSION }}"
           files: |
-            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/flutter-apk/app-release-signed.apk
