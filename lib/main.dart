@@ -246,7 +246,7 @@ class VideoPlayerWidget extends StatelessWidget {
                       onDragging: (handlerIndex, lowerValue, upperValue) {
                         onSpeedChanged(lowerValue / 10);
                       },
-                      handler: FlutterSliderHandler(
+                      handler: FlutterSliderHandler( // Correct usage
                         decoration: const BoxDecoration(),
                         child: const Material(
                           type: MaterialType.canvas,
@@ -381,7 +381,7 @@ class VideoPlayerWidget extends StatelessWidget {
                       onDragging: (handlerIndex, lowerValue, upperValue) {
                         onSpeedChanged(lowerValue / 10);
                       },
-                      handler: FlutterSliderHandler(
+                      handler: FlutterSliderHandler( //correct usage
                         decoration: const BoxDecoration(),
                         child: const Material(
                           type: MaterialType.canvas,
