@@ -266,7 +266,7 @@ class VideoPlayerWidget extends StatelessWidget {
                         onSeekChanged(lowerValue);
                       },
                       onDragStarted: (handlerIndex, lowerValue) => onSeekStart(),
-                      onDragEnded: (handlerIndex, lowerValue, upperValue) =>
+                      onDragCompleted: (handlerIndex, lowerValue, upperValue) =>
                           onSeekEnd(),
                     ),
                   ),
