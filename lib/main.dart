@@ -194,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class VideoPlayerWidget extends StatelessWidget {
+class VideoPlayerWidget extends StatefulWidget {
   final VideoPlayerController? controller;
   final VoidCallback pickVideo;
   final double playbackSpeed;
@@ -223,13 +223,23 @@ class VideoPlayerWidget extends StatelessWidget {
   });
 
   @override
+  State<VideoPlayerWidget> createState() => _VideoPlayerWidgetState();
+}
+
+class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
+  double _scale = 1.0;
+  double _previousScale = 1.0;
+
+  @override
   Widget build(BuildContext context) {
-    return Container( // Wrap the entire Row with a Container
-      color: isLeft ? Colors.blueGrey : Colors.amberAccent, // Set background color
+    return Container(
+      color: widget.isLeft
+          ? Colors.blueGrey
+          : Colors.amberAccent, // Set background color
       child: Row(
         children: [
           // Sliders for the Left Video
-          if (isLeft)
+          if (widget.isLeft)
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -241,13 +251,13 @@ class VideoPlayerWidget extends StatelessWidget {
                         axis: Axis.vertical,
                         min: 0,
                         max: 20,
-                        values: [playbackSpeed * 10],
+                        values: [widget.playbackSpeed * 10],
                         step: FlutterSliderStep(
                           step: 1,
                           isPercentRange: true,
                         ),
                         onDragging: (handlerIndex, lowerValue, upperValue) {
-                          onSpeedChanged(lowerValue / 10);
+                          widget.onSpeedChanged(lowerValue / 10);
                         },
                         handler: FlutterSliderHandler(
                           decoration: const BoxDecoration(),
@@ -263,7 +273,8 @@ class VideoPlayerWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (controller != null && controller!.value.isInitialized)
+                    if (widget.controller != null &&
+                        widget.controller!.value.isInitialized)
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
@@ -271,18 +282,21 @@ class VideoPlayerWidget extends StatelessWidget {
                           child: FlutterSlider(
                             axis: Axis.vertical,
                             min: 0,
-                            max: controller!.value.duration.inMilliseconds
+                            max: widget
+                                .controller!.value.duration.inMilliseconds
                                 .toDouble(),
-                            values: [position.inMilliseconds.toDouble()],
+                            values: [widget.position.inMilliseconds.toDouble()],
                             onDragging: (handlerIndex, lowerValue, upperValue) {
-                              onSeekChanged(lowerValue);
+                              widget.onSeekChanged(lowerValue);
                             },
-                            onDragStarted: (handlerIndex, lowerValue, upperValue) =>
-                                onSeekStart(),
+                            onDragStarted:
+                                (handlerIndex, lowerValue, upperValue) =>
+                                    widget.onSeekStart(),
                             onDragCompleted:
                                 (handlerIndex, lowerValue, upperValue) =>
-                                    onSeekEnd(),
-                            handler: FlutterSliderHandler( // Add handler here
+                                    widget.onSeekEnd(),
+                            handler: FlutterSliderHandler(
+                              // Add handler here
                               decoration: const BoxDecoration(),
                               child: const Material(
                                 type: MaterialType.canvas,
@@ -301,11 +315,12 @@ class VideoPlayerWidget extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text("${playbackSpeed.toStringAsFixed(1)}x"),
-                    if (controller != null && controller!.value.isInitialized)
+                    Text("${widget.playbackSpeed.toStringAsFixed(1)}x"),
+                    if (widget.controller != null &&
+                        widget.controller!.value.isInitialized)
                       Padding(
                         padding: const EdgeInsets.only(left: 45),
-                        child: Text("${formatDuration(position)} s"),
+                        child: Text("${widget.formatDuration(widget.position)} s"),
                       )
                   ],
                 ),
@@ -318,34 +333,50 @@ class VideoPlayerWidget extends StatelessWidget {
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                    if (controller != null && controller!.value.isInitialized)
+                    if (widget.controller != null &&
+                        widget.controller!.value.isInitialized)
                       GestureDetector(
+                        onScaleStart: (ScaleStartDetails details) {
+                          _previousScale = _scale;
+                        },
+                        onScaleUpdate: (ScaleUpdateDetails details) {
+                          setState(() {
+                            _scale = _previousScale * details.scale;
+                          });
+                        },
+                        onScaleEnd: (ScaleEndDetails details) {
+                          // Optional: Add logic for scale end if needed
+                        },
                         onTap: () {
-                          if (controller!.value.isPlaying) {
-                            controller!.pause();
+                          if (widget.controller!.value.isPlaying) {
+                            widget.controller!.pause();
                           } else {
-                            controller!.play();
+                            widget.controller!.play();
                           }
                         },
-                        child: AspectRatio(
-                          aspectRatio: controller!.value.aspectRatio,
-                          child: VideoPlayer(controller!),
+                        child: Transform.scale(
+                          scale: _scale,
+                          child: AspectRatio(
+                            aspectRatio: widget.controller!.value.aspectRatio,
+                            child: VideoPlayer(widget.controller!),
+                          ),
                         ),
                       ),
-                    if (controller == null || !controller!.value.isInitialized)
+                    if (widget.controller == null ||
+                        !widget.controller!.value.isInitialized)
                       ElevatedButton(
-                        onPressed: pickVideo,
+                        onPressed: widget.pickVideo,
                         child: const Text('Pick Video'),
                       ),
                   ],
                 ),
-                if (controller != null &&
-                    controller!.value.isInitialized &&
-                    !controller!.value.isPlaying &&
-                    controller!.value.position == Duration.zero)
+                if (widget.controller != null &&
+                    widget.controller!.value.isInitialized &&
+                    !widget.controller!.value.isPlaying &&
+                    widget.controller!.value.position == Duration.zero)
                   ElevatedButton(
                     onPressed: () {
-                      controller!.play();
+                      widget.controller!.play();
                     },
                     child: const Text('Play Video'),
                   ),
@@ -353,13 +384,14 @@ class VideoPlayerWidget extends StatelessWidget {
             ),
           ),
           // Sliders for the Right Video
-          if (!isLeft)
+          if (!widget.isLeft)
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
                   children: [
-                    if (controller != null && controller!.value.isInitialized)
+                    if (widget.controller != null &&
+                        widget.controller!.value.isInitialized)
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
@@ -367,18 +399,21 @@ class VideoPlayerWidget extends StatelessWidget {
                           child: FlutterSlider(
                             axis: Axis.vertical,
                             min: 0,
-                            max: controller!.value.duration.inMilliseconds
+                            max: widget
+                                .controller!.value.duration.inMilliseconds
                                 .toDouble(),
-                            values: [position.inMilliseconds.toDouble()],
+                            values: [widget.position.inMilliseconds.toDouble()],
                             onDragging: (handlerIndex, lowerValue, upperValue) {
-                              onSeekChanged(lowerValue);
+                              widget.onSeekChanged(lowerValue);
                             },
-                            onDragStarted: (handlerIndex, lowerValue, upperValue) =>
-                                onSeekStart(),
+                            onDragStarted:
+                                (handlerIndex, lowerValue, upperValue) =>
+                                    widget.onSeekStart(),
                             onDragCompleted:
                                 (handlerIndex, lowerValue, upperValue) =>
-                                    onSeekEnd(),
-                            handler: FlutterSliderHandler( // Add handler here
+                                    widget.onSeekEnd(),
+                            handler: FlutterSliderHandler(
+                              // Add handler here
                               decoration: const BoxDecoration(),
                               child: const Material(
                                 type: MaterialType.canvas,
@@ -399,13 +434,13 @@ class VideoPlayerWidget extends StatelessWidget {
                         axis: Axis.vertical,
                         min: 0,
                         max: 20,
-                        values: [playbackSpeed * 10],
+                        values: [widget.playbackSpeed * 10],
                         step: FlutterSliderStep(
                           step: 1,
                           isPercentRange: true,
                         ),
                         onDragging: (handlerIndex, lowerValue, upperValue) {
-                          onSpeedChanged(lowerValue / 10);
+                          widget.onSpeedChanged(lowerValue / 10);
                         },
                         handler: FlutterSliderHandler(
                           decoration: const BoxDecoration(),
@@ -425,12 +460,13 @@ class VideoPlayerWidget extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    if (controller != null && controller!.value.isInitialized)
+                    if (widget.controller != null &&
+                        widget.controller!.value.isInitialized)
                       Padding(
                         padding: const EdgeInsets.only(right: 45),
-                        child: Text("${formatDuration(position)} s"),
+                        child: Text("${widget.formatDuration(widget.position)} s"),
                       ),
-                    Text("${playbackSpeed.toStringAsFixed(1)}x"),
+                    Text("${widget.playbackSpeed.toStringAsFixed(1)}x"),
                   ],
                 ),
               ],
