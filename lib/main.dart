@@ -32,32 +32,55 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  VideoPlayerController? _controller;
-  File? _videoFile;
-  double _playbackSpeed = 1.0;
-  Duration _position = Duration.zero; // Current position
-  bool _isSeeking = false; // Flag to indicate seeking
+  VideoPlayerController? _controller1;
+  File? _videoFile1;
+  double _playbackSpeed1 = 1.0;
+  Duration _position1 = Duration.zero;
+  bool _isSeeking1 = false;
 
-  Future<void> _pickVideo() async {
+  VideoPlayerController? _controller2;
+  File? _videoFile2;
+  double _playbackSpeed2 = 1.0;
+  Duration _position2 = Duration.zero;
+  bool _isSeeking2 = false;
+
+  Future<void> _pickVideo(int videoNumber) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.video,
     );
 
     if (result != null) {
-      _videoFile = File(result.files.single.path!);
-      _initializeVideoPlayer();
+      if (videoNumber == 1) {
+        _videoFile1 = File(result.files.single.path!);
+        _initializeVideoPlayer(1);
+      } else if (videoNumber == 2) {
+        _videoFile2 = File(result.files.single.path!);
+        _initializeVideoPlayer(2);
+      }
     }
   }
 
-  Future<void> _initializeVideoPlayer() async {
-    if (_videoFile != null) {
-      _controller = VideoPlayerController.file(_videoFile!)
+  Future<void> _initializeVideoPlayer(int videoNumber) async {
+    if (videoNumber == 1 && _videoFile1 != null) {
+      _controller1 = VideoPlayerController.file(_videoFile1!)
         ..initialize().then((_) {
           setState(() {});
-          _controller!.addListener(() {
-            if (!_isSeeking) { // Only update position if not seeking
+          _controller1!.addListener(() {
+            if (!_isSeeking1) {
               setState(() {
-                _position = _controller!.value.position;
+                _position1 = _controller1!.value.position;
+              });
+            }
+          });
+        });
+    } else if (videoNumber == 2 && _videoFile2 != null) {
+      _controller2 = VideoPlayerController.file(_videoFile2!)
+        ..initialize().then((_) {
+          setState(() {});
+          _controller2!.addListener(() {
+            if (!_isSeeking2) {
+              setState(() {
+                _position2 = _controller2!.value.position;
               });
             }
           });
@@ -67,8 +90,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {
+    _controller1?.dispose();
+    _controller2?.dispose();
     super.dispose();
-    _controller?.dispose();
   }
 
   String _formatDuration(Duration? duration) {
@@ -88,106 +112,182 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _controller != null && _controller!.value.isInitialized
-                ? AspectRatio(
-                    aspectRatio: _controller!.value.aspectRatio,
-                    child: VideoPlayer(_controller!),
-                  )
-                : const Text('No video selected'),
-            ElevatedButton(
-              onPressed: _pickVideo,
-              child: const Text('Pick Video'),
-            ),
-            // Show a play button if the video is initialized but not playing
-            if (_controller != null &&
-                _controller!.value.isInitialized &&
-                !_controller!.value.isPlaying &&
-                _controller!.value.position == Duration.zero)
-              ElevatedButton(
-                onPressed: () {
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              // Video Player 1
+              VideoPlayerWidget(
+                controller: _controller1,
+                pickVideo: () => _pickVideo(1),
+                playbackSpeed: _playbackSpeed1,
+                position: _position1,
+                isSeeking: _isSeeking1,
+                onSpeedChanged: (value) {
                   setState(() {
-                    _controller!.play();
+                    _playbackSpeed1 = value;
+                    _controller1!.setPlaybackSpeed(_playbackSpeed1);
                   });
                 },
-                child: const Text('Play Video'),
+                onSeekChanged: (value) {
+                  setState(() {
+                    _position1 = Duration(milliseconds: value.toInt());
+                    _controller1!.seekTo(_position1);
+                  });
+                },
+                onSeekStart: () {
+                  setState(() {
+                    _isSeeking1 = true;
+                  });
+                },
+                onSeekEnd: () {
+                  setState(() {
+                    _isSeeking1 = false;
+                  });
+                },
+                formatDuration: _formatDuration,
               ),
-
-            // Timeline slider and time display
-            if (_controller != null && _controller!.value.isInitialized)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(_formatDuration(_position)),
-                  Expanded(
-                    child: Slider(
-                      value: _position.inMilliseconds.toDouble(),
-                      min: 0,
-                      max: _controller!.value.duration.inMilliseconds.toDouble(),
-                      onChanged: (value) {
-                        setState(() {
-                          _position = Duration(milliseconds: value.toInt()); // Update _position during drag
-                          _controller!.seekTo(Duration(milliseconds: value.toInt()));
-                        });
-                      },
-                      onChangeStart: (value) {
-                        setState(() {
-                          _isSeeking = true; // Set seeking flag to true
-                        });
-                      },
-                      onChangeEnd: (value) {
-                        setState(() {
-                          _isSeeking = false; // Set seeking flag to false
-                        });
-                      },
-                    ),
-                  ),
-                  Text(_formatDuration(_controller!.value.duration)),
-                ],
+              const SizedBox(height: 40),
+              // Video Player 2
+              VideoPlayerWidget(
+                controller: _controller2,
+                pickVideo: () => _pickVideo(2),
+                playbackSpeed: _playbackSpeed2,
+                position: _position2,
+                isSeeking: _isSeeking2,
+                onSpeedChanged: (value) {
+                  setState(() {
+                    _playbackSpeed2 = value;
+                    _controller2!.setPlaybackSpeed(_playbackSpeed2);
+                  });
+                },
+                onSeekChanged: (value) {
+                  setState(() {
+                    _position2 = Duration(milliseconds: value.toInt());
+                    _controller2!.seekTo(_position2);
+                  });
+                },
+                onSeekStart: () {
+                  setState(() {
+                    _isSeeking2 = true;
+                  });
+                },
+                onSeekEnd: () {
+                  setState(() {
+                    _isSeeking2 = false;
+                  });
+                },
+                formatDuration: _formatDuration,
               ),
-
-            // Playback speed controls
-            if (_controller != null && _controller!.value.isInitialized)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 150,
-                    child: Slider(
-                      min: 0.5,
-                      max: 2.0,
-                      value: _playbackSpeed,
-                      onChanged: (value) {
-                        setState(() {
-                          _playbackSpeed = value;
-                          _controller!.setPlaybackSpeed(_playbackSpeed);
-                        });
-                      },
-                    ),
-                  ),
-                  Text("${_playbackSpeed.toStringAsFixed(1)}x"),
-                ],
-              ),
-          ],
+            ],
+          ),
         ),
       ),
-      floatingActionButton: _controller != null && _controller!.value.isInitialized
-          ? FloatingActionButton(
-              onPressed: () {
-                setState(() {
-                  _controller!.value.isPlaying
-                      ? _controller!.pause()
-                      : _controller!.play();
-                });
-              },
-              child: Icon(
-                _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
+    );
+  }
+}
+
+class VideoPlayerWidget extends StatelessWidget {
+  final VideoPlayerController? controller;
+  final VoidCallback pickVideo;
+  final double playbackSpeed;
+  final Duration position;
+  final bool isSeeking;
+  final Function(double) onSpeedChanged;
+  final Function(double) onSeekChanged;
+  final VoidCallback onSeekStart;
+  final VoidCallback onSeekEnd;
+  final String Function(Duration?) formatDuration;
+
+  const VideoPlayerWidget({
+    super.key,
+    required this.controller,
+    required this.pickVideo,
+    required this.playbackSpeed,
+    required this.position,
+    required this.isSeeking,
+    required this.onSpeedChanged,
+    required this.onSeekChanged,
+    required this.onSeekStart,
+    required this.onSeekEnd,
+    required this.formatDuration,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        controller != null && controller!.value.isInitialized
+            ? AspectRatio(
+                aspectRatio: controller!.value.aspectRatio,
+                child: VideoPlayer(controller!),
+              )
+            : ElevatedButton(
+                onPressed: pickVideo,
+                child: const Text('Pick Video'),
               ),
-            )
-          : null,
+        // Show a play button if the video is initialized but not playing
+        if (controller != null &&
+            controller!.value.isInitialized &&
+            !controller!.value.isPlaying &&
+            controller!.value.position == Duration.zero)
+          ElevatedButton(
+            onPressed: () {
+              controller!.play();
+            },
+            child: const Text('Play Video'),
+          ),
+
+        // Timeline slider and time display
+        if (controller != null && controller!.value.isInitialized)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(formatDuration(position)),
+              Expanded(
+                child: Slider(
+                  value: position.inMilliseconds.toDouble(),
+                  min: 0,
+                  max: controller!.value.duration.inMilliseconds.toDouble(),
+                  onChanged: onSeekChanged,
+                  onChangeStart: (_) => onSeekStart(),
+                  onChangeEnd: (_) => onSeekEnd(),
+                ),
+              ),
+              Text(formatDuration(controller!.value.duration)),
+            ],
+          ),
+
+        // Playback speed controls
+        if (controller != null && controller!.value.isInitialized)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 150,
+                child: Slider(
+                  min: 0.5,
+                  max: 2.0,
+                  value: playbackSpeed,
+                  onChanged: onSpeedChanged,
+                ),
+              ),
+              Text("${playbackSpeed.toStringAsFixed(1)}x"),
+            ],
+          ),
+        if (controller != null && controller!.value.isInitialized)
+          FloatingActionButton(
+            onPressed: () {
+                controller!.value.isPlaying
+                    ? controller!.pause()
+                    : controller!.play();
+            },
+            child: Icon(
+              controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
+            ),
+          )
+      ],
     );
   }
 }
