@@ -36,6 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   File? _videoFile;
   double _playbackSpeed = 1.0;
   Duration _position = Duration.zero; // Current position
+  bool _isSeeking = false; // Flag to indicate seeking
 
   Future<void> _pickVideo() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -54,9 +55,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ..initialize().then((_) {
           setState(() {});
           _controller!.addListener(() {
-            setState(() {
-              _position = _controller!.value.position;
-            });
+            if (!_isSeeking) { // Only update position if not seeking
+              setState(() {
+                _position = _controller!.value.position;
+              });
+            }
           });
         });
     }
@@ -68,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _controller?.dispose();
   }
 
-    String _formatDuration(Duration? duration) {
+  String _formatDuration(Duration? duration) {
     if (duration == null) {
       return '00:00';
     }
@@ -126,7 +129,18 @@ class _MyHomePageState extends State<MyHomePage> {
                       max: _controller!.value.duration.inMilliseconds.toDouble(),
                       onChanged: (value) {
                         setState(() {
+                          _position = Duration(milliseconds: value.toInt()); // Update _position during drag
                           _controller!.seekTo(Duration(milliseconds: value.toInt()));
+                        });
+                      },
+                      onChangeStart: (value) {
+                        setState(() {
+                          _isSeeking = true; // Set seeking flag to true
+                        });
+                      },
+                      onChangeEnd: (value) {
+                        setState(() {
+                          _isSeeking = false; // Set seeking flag to false
                         });
                       },
                     ),
