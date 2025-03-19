@@ -1,7 +1,7 @@
 name: crux_sync
 description: "Simple application to compare two videos simultaneously."
-publish_to: 'none'
-version: 1.0.0+1
+publish_to: "none"
+version: 0.6.0
 homepage: https://github.com/adrianlzt/crux_sync
 repository: https://github.com/adrianlzt/crux_sync
 
