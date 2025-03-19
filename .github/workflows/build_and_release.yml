@@ -89,6 +89,9 @@ jobs:
           "$ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner" sign --ks keystore.jks --ks-pass pass:"${{ secrets.KEYSTORE_PASSWORD }}" --ks-key-alias "${{ secrets.KEY_ALIAS }}" --key-pass pass:"${{ secrets.KEY_PASSWORD }}" --out build/app/outputs/flutter-apk/app-release-signed.apk build/app/outputs/flutter-apk/app-release-aligned.apk
           "$ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner" verify --verbose build/app/outputs/flutter-apk/app-release-signed.apk
 
+      - name: Rename APK
+        run: mv build/app/outputs/flutter-apk/app-release-signed.apk build/app/outputs/flutter-apk/crux-sync-${{ env.NEW_VERSION }}.apk
+
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
