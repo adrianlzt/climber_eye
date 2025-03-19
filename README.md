@@ -1,8 +1,7 @@
-# Climber Eye
+# Crux sync
 
-Climber Eye is a Flutter application for comparing two videos side-by-side.
+Crux sync is a Flutter application for comparing two videos side-by-side.
 
 ## Building
 
 To build the app, you'll need Flutter installed.  Then, run:
-

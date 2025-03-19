@@ -1,4 +1,4 @@
-package com.adrianlzt.climber_eye
+package com.adrianlzt.crux_sync
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,4 +1,4 @@
-Climber Eye is a simple Flutter application that allows you to compare two videos simultaneously. It's designed to help analyze and compare movements, techniques, or any other visual details in two videos.
+CruxSync is a simple Flutter application that allows you to compare two videos simultaneously. It's designed to help analyze and compare movements, techniques, or any other visual details in two videos.
 
 Features:
 

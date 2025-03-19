@@ -31,11 +31,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Video Player Demo',
+      title: 'CruxSync',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Video Player Demo'),
+      home: const MyHomePage(title: 'CruxSync Video Player'),
     );
   }
 }
@@ -363,7 +363,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                           child: const Material(
                             type: MaterialType.canvas,
                             elevation: 3,
-                            child: Icon(
+                            child: const Icon(
                               Icons.fast_forward,
                               size: 25,
                               color: Colors.amberAccent, // Changed color

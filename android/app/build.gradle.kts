@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.adrianlzt.climber_eye"
+    namespace = "com.adrianlzt.crux_sync"
     compileSdk = 35
 
     compileOptions {
@@ -22,7 +22,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.adrianlzt.climber_eye"
+        applicationId = "com.adrianlzt.crux_sync"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

@@ -1,9 +1,9 @@
-name: climber_eye
+name: crux_sync
 description: "Simple application to compare two videos simultaneously."
 publish_to: 'none'
 version: 1.0.0+1
-homepage: https://github.com/adrianlzt/climber_eye
-repository: https://github.com/adrianlzt/climber_eye
+homepage: https://github.com/adrianlzt/crux_sync
+repository: https://github.com/adrianlzt/crux_sync
 
 environment:
   sdk: ^3.7.0
