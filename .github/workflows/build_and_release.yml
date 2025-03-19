@@ -64,11 +64,27 @@ jobs:
       - name: Build APK
         run: flutter build apk --release # Build in release mode
 
+      - name: Install Android SDK tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y android-sdk-platform-tools android-sdk-build-tools
+          mkdir -p "$ANDROID_SDK_ROOT/cmdline-tools"
+          cd "$ANDROID_SDK_ROOT/cmdline-tools"
+          curl -s https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -o commandlinetools.zip
+          unzip commandlinetools.zip
+          rm commandlinetools.zip
+          cd -
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root="$ANDROID_SDK_ROOT" --licenses
+          $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root="$ANDROID_SDK_ROOT" "build-tools;34.0.0" "platform-tools" "platforms;android-34"
+      - name: Align APK
+        run: |
+          "$ANDROID_SDK_ROOT/build-tools/34.0.0/zipalign" -v -p 4 build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/app-release-aligned.apk
+
       - name: Sign APK
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore.jks
-          apksigner sign --ks keystore.jks --ks-pass pass:"${{ secrets.KEYSTORE_PASSWORD }}" --ks-key-alias "${{ secrets.KEY_ALIAS }}" --key-pass pass:"${{ secrets.KEY_PASSWORD }}" --out build/app/outputs/flutter-apk/app-release-signed.apk build/app/outputs/flutter-apk/app-release-aligned.apk
-          apksigner verify --verbose build/app/outputs/flutter-apk/app-release-signed.apk
+          "$ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner" sign --ks keystore.jks --ks-pass pass:"${{ secrets.KEYSTORE_PASSWORD }}" --ks-key-alias "${{ secrets.KEY_ALIAS }}" --key-pass pass:"${{ secrets.KEY_PASSWORD }}" --out build/app/outputs/flutter-apk/app-release-signed.apk build/app/outputs/flutter-apk/app-release-aligned.apk
+          "$ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner" verify --verbose build/app/outputs/flutter-apk/app-release-signed.apk
 
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
