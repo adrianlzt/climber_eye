@@ -54,7 +54,7 @@ jobs:
             MINOR=$((MINOR + 1))
             PATCH=0
           # Default to patch increase
-          else
+          else:
             PATCH=$((PATCH + 1))
           fi
 
@@ -97,4 +97,4 @@ jobs:
           prerelease: false
           title: "Release ${{ env.NEW_VERSION }}"
           files: |
-            build/app/outputs/flutter-apk/app-release-signed.apk
+            build/app/outputs/flutter-apk/crux-sync-${{ env.NEW_VERSION }}.apk
