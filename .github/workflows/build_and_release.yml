@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'README.md'
+      - "README.md"
+      - "assets/screenshot-explain.png"
 
 jobs:
   build-and-release:
