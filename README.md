@@ -18,7 +18,7 @@ This application allows you to load and control two videos simultaneously, makin
 
 You can download the latest version of the app (APK for Android) from the following link:
 
-[Download Latest Release](https://github.com/adrianlzt/crux-sync/releases/latest/download/app-release-signed.apk)
+[Download Latest Release](https://github.com/adrianlzt/crux-sync/releases/latest/download/crux-sync-latest.apk)
 
 ## Building
 

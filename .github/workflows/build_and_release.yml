@@ -54,7 +54,7 @@ jobs:
             MINOR=$((MINOR + 1))
             PATCH=0
           # Default to patch increase
-          else:
+          else
             PATCH=$((PATCH + 1))
           fi
 
@@ -92,6 +92,9 @@ jobs:
       - name: Rename APK
         run: mv build/app/outputs/flutter-apk/app-release-signed.apk build/app/outputs/flutter-apk/crux-sync-${{ env.NEW_VERSION }}.apk
 
+      - name: Copy for latest
+        run: cp build/app/outputs/flutter-apk/crux-sync-${{ env.NEW_VERSION }}.apk build/app/outputs/flutter-apk/crux-sync-latest.apk
+
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -101,3 +104,4 @@ jobs:
           title: "Release ${{ env.NEW_VERSION }}"
           files: |
             build/app/outputs/flutter-apk/crux-sync-${{ env.NEW_VERSION }}.apk
+            build/app/outputs/flutter-apk/crux-sync-latest.apk
